@@ -1,9 +1,10 @@
+/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-euclid), sans-serif;
 }
 
 @layer base {
@@ -70,3 +71,38 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.leaflet-control {
+  border: none !important;
+}
+
+/* Стили для кнопок управления картой */
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background-color: #38a169 !important;
+  color: white !important;
+  box-shadow: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: #2f855a !important;
+}
+
+.leaflet-control-zoom-in span,
+.leaflet-control-zoom-out span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+

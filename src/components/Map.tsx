@@ -23,7 +23,7 @@ export default function Map({ data }: { data: any[] }) {
 
     const icon = L.divIcon({
         html: `<div style="display: flex; justify-content: center; align-items: center; 
-                            width: 30px; height: 30px; background: green; border-radius: 50%;">
+                            width: 30px; height: 30px; background: #38a169; border-radius: 50%;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
                         <path d="M2 21h19v-2H2v2zm18-5V3h-2v13h2zm-4 0V3h-2v13h2zm-4 0V3h-2v13h2zm-4 0V3H6v13h2z"/>
                     </svg>
@@ -34,9 +34,28 @@ export default function Map({ data }: { data: any[] }) {
     });
 
     return (
-        <MapContainer center={[55.751244, 37.618423]} zoom={10} className="w-full h-full">
+        <MapContainer center={[55.751244, 37.618423]} zoom={10} className="w-full h-full rounded-lg border border-green-300 shadow-md">
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <MarkerClusterGroup>
+            <MarkerClusterGroup
+                showCoverageOnHover={false}
+                maxClusterRadius={50}
+                iconCreateFunction={(cluster) => {
+                    const count = cluster.getChildCount();
+                    let color = "#38a169";
+                    if (count < 10) color = "#9ae6b4";
+                    else if (count < 50) color = "#68d391";
+                    else if (count < 100) color = "#48bb78";
+                    return L.divIcon({
+                        html: `<div style="display: flex; justify-content: center; align-items: center; 
+                                    width: 40px; height: 40px; background: ${color}; border-radius: 50%; color: white; font-weight: bold;">
+                                    ${count}
+                                </div>`,
+                        className: "custom-cluster",
+                        iconSize: [40, 40],
+                        iconAnchor: [20, 20],
+                    });
+                }}
+            >
                 {data.map((item, index) => (
                     <Marker key={index} position={[item.Cells.geoData.coordinates[1], item.Cells.geoData.coordinates[0]]} icon={icon}>
                         <Popup>
