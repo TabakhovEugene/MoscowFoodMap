@@ -3,6 +3,12 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import { FoodEstablishment } from "@/lib/types";
+import type { DivIcon, PointExpression } from "leaflet";
+
+interface MarkerCluster {
+    getChildCount: () => number;
+}
 
 const MapContainer = dynamic(() => import("react-leaflet").then(mod => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then(mod => mod.TileLayer), { ssr: false });
@@ -10,7 +16,7 @@ const Marker = dynamic(() => import("react-leaflet").then(mod => mod.Marker), { 
 const Popup = dynamic(() => import("react-leaflet").then(mod => mod.Popup), { ssr: false });
 const MarkerClusterGroup = dynamic(() => import("react-leaflet-cluster"), { ssr: false });
 
-export default function Map({ data }: { data: any[] }) {
+export default function Map({ data }: { data: FoodEstablishment[] }) {
     const [L, setL] = useState<any>(null);
 
     useEffect(() => {
@@ -29,8 +35,8 @@ export default function Map({ data }: { data: any[] }) {
                     </svg>
                 </div>`,
         className: "custom-icon",
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
+        iconSize: [30, 30] as PointExpression,
+        iconAnchor: [15, 30] as PointExpression,
     });
 
     return (
@@ -39,7 +45,7 @@ export default function Map({ data }: { data: any[] }) {
             <MarkerClusterGroup
                 showCoverageOnHover={false}
                 maxClusterRadius={50}
-                iconCreateFunction={(cluster) => {
+                iconCreateFunction={(cluster: MarkerCluster): DivIcon => {
                     const count = cluster.getChildCount();
                     let color = "#38a169";
                     if (count < 10) color = "#9ae6b4";
@@ -51,8 +57,8 @@ export default function Map({ data }: { data: any[] }) {
                                     ${count}
                                 </div>`,
                         className: "custom-cluster",
-                        iconSize: [40, 40],
-                        iconAnchor: [20, 20],
+                        iconSize: [40, 40] as PointExpression,
+                        iconAnchor: [20, 20] as PointExpression,
                     });
                 }}
             >
